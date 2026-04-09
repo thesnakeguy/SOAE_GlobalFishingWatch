@@ -260,7 +260,7 @@ message("Years in heatmap data: ",
 
 ```{r, output = TRUE, eval = TRUE, echo = FALSE}
 #| label: fig-heatmaps
-#| fig-cap: "Annual fishing effort hotspots in the CCAMLR convention area (Antarctic Peninsula), last 5 years. Colour encodes apparent fishing hours per 0.1° grid cell on a log₁₀ scale; all panels share the same colour axis for direct comparison."
+#| fig-cap: "Annual fishing effort hotspots in the CCAMLR convention area (Antarctic Peninsula), last `r length(HEATMAP_YEARS)` years. Colour encodes apparent fishing hours per 0.1° grid cell on a log₁₀ scale; all panels share the same colour axis for direct comparison."
 #| fig-height: 16
 
 world_sf <- ne_countries(scale = "medium", returnclass = "sf")
