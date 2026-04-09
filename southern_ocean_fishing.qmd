@@ -83,8 +83,7 @@ theme_antarctic <- function() {
 
 GFW_CAPTION <- paste0(
   "Data source: Global Fishing Watch (globalfishingwatch.org) — ",
-  "AIS-based apparent fishing effort (public-global-fishing-effort:v3.0), ",
-  "CCAMLR convention area. Attribute: Global Fishing Watch."
+  "AIS-based apparent fishing effort (public-global-fishing-effort:v3.0)"
 )
 ```
 
@@ -260,7 +259,7 @@ message("Years in heatmap data: ",
 
 ```{r, output = TRUE, eval = TRUE, echo = FALSE}
 #| label: fig-heatmaps
-#| fig-cap: "Annual fishing effort hotspots in the CCAMLR convention area (Antarctic Peninsula), last `r length(HEATMAP_YEARS)` years. Colour encodes apparent fishing hours per 0.1° grid cell on a log₁₀ scale; all panels share the same colour axis for direct comparison."
+#| fig-cap: "Annual fishing effort hotspots in the Antarctic Peninsula. Colour encodes apparent fishing hours per 0.1° grid cell on a log₁₀ scale; all panels share the same colour axis for direct comparison."
 #| fig-height: 16
 
 world_sf <- ne_countries(scale = "medium", returnclass = "sf")
@@ -304,7 +303,7 @@ panels <- map(HEATMAP_YEARS, make_heatmap_panel)
 
 spatial_panels <- wrap_plots(panels, ncol = 2) +
   plot_annotation(
-    title    = "Annual Fishing Effort Hotspots — Antarctic Peninsula (CCAMLR)",
+    title    = "Annual Fishing Effort Hotspots — Antarctic Peninsula",
     subtitle = glue("AIS-based apparent fishing hours per 0.1° grid cell, ",
                     "{min(HEATMAP_YEARS)}–{max(HEATMAP_YEARS)}"),
     caption  = GFW_CAPTION,
@@ -420,15 +419,12 @@ monthly_anom <- monthly_totals |>
   mutate(anomaly_std = if_else(clim_sd > 0,
                                (fishing_hours - clim_mean) / clim_sd,
                                0))
-
-message("Trend range: ", min(monthly_totals$date),
-        " to ", max(monthly_totals$date))
 ```
 
 
 ```{r, output = FALSE, eval = TRUE, echo = FALSE}
 #| label: fig-annual-trend
-#| fig-cap: "Total apparent fishing hours in the CCAMLR convention area per year. Blue ribbon = LOESS smooth (span = 0.9) with 95% CI."
+#| fig-cap: "Total apparent fishing hours in the Antarctic Peninsula per year. Blue ribbon = LOESS smooth (span = 0.9) with 95% CI."
 
 ## Annual total fishing hours
 
@@ -454,7 +450,7 @@ p_annual <- ggplot(annual_totals,
   scale_y_continuous(labels = scales::comma, limits = c(0, NA),
                      expand = expansion(mult = c(0, 0.12))) +
   labs(
-    title    = "Total Annual Fishing Effort — Antarctic Peninsula (CCAMLR)",
+    title    = "Total Annual Fishing Effort — Antarctic Peninsula",
     subtitle = glue("Apparent fishing hours (all AIS-equipped fishing vessels), ",
                     "{TREND_START}–{CURRENT_YEAR}"),
     x = NULL, y = "Fishing hours (thousands)",
@@ -488,7 +484,7 @@ p_anom <- monthly_anom |>
   ) +
   scale_y_discrete(limits = rev(month.abb)) +
   labs(
-    title    = "Monthly Fishing Effort Anomaly — Antarctic Peninsula (CCAMLR)",
+    title    = "Monthly Fishing Effort Anomaly — Antarctic Peninsula",
     subtitle = glue("Standardised deviation from long-term monthly mean, ",
                     "{TREND_START}–{CURRENT_YEAR}"),
     x = NULL, y = NULL,
@@ -522,7 +518,7 @@ plot(temporal_compo)
 
 ```{r, output = TRUE, eval = TRUE, echo = FALSE}
 #| label: fig-gear-trend
-#| fig-cap: "Annual fishing effort by gear type in the CCAMLR convention area."
+#| fig-cap: "Annual fishing effort by gear type in the Antarctic Peninsula."
 
 gear_plot <- gear_annual |>
   mutate(
@@ -544,7 +540,7 @@ gearplot <- ggplot(gear_plot, aes(x = factor(year), y = fishing_hours / 1e3,
   scale_y_continuous(labels = scales::comma,
                      expand = expansion(mult = c(0, 0.05))) +
   labs(
-    title    = "Fishing Effort by Gear Type — Antarctic Peninsula (CCAMLR)",
+    title    = "Fishing Effort by Gear Type — Antarctic Peninsula",
     subtitle = glue("Annual apparent fishing hours (×10³), ",
                     "{min(HEATMAP_YEARS)}–{max(HEATMAP_YEARS)}"),
     x = NULL, y = "Fishing hours (thousands)",
@@ -558,7 +554,7 @@ plot(gearplot)
 
 ---
 
-```{r}
+```{r, output = FALSE, eval = TRUE, echo = FALSE}
 #| label: Save plots
 
 ggsave(
