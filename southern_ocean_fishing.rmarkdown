@@ -88,6 +88,8 @@ GFW_CAPTION <- paste0(
 )
 ```
 
+
+
 # Introduction
 
 This chapter presents spatiotemporal data products on commercial fishing
@@ -105,6 +107,8 @@ on total fishing activity.
 ---
 
 # Annual Fishing Hotspot Heatmaps (last `r length(HEATMAP_YEARS)` years)
+
+
 
 
 
@@ -220,8 +224,6 @@ if (!exists("heatmap_raw")) {
 glimpse(heatmap_raw)
 ```
 
-
-
 ```{r, output = FALSE, eval = TRUE, echo = FALSE}
 #| label: wrangle-heatmap
 
@@ -256,7 +258,11 @@ message("Years in heatmap data: ",
         paste(sort(unique(heatmap_total$year)), collapse = ", "))
 ```
 
+
+
 ## Heatmap visualisation
+
+
 
 ```{r, output = TRUE, eval = TRUE, echo = FALSE}
 #| label: fig-heatmaps
@@ -318,9 +324,13 @@ spatial_panels <- wrap_plots(panels, ncol = 2) +
 plot(spatial_panels)
 ```
 
+
+
 ---
 
 # Temporal Evolution of Fishing Intensity from `r TREND_START` to `r CURRENT_YEAR`
+
+
 
 
 ```{r, output = FALSE, eval = TRUE, echo = FALSE}
@@ -368,7 +378,6 @@ if (!exists("trend_raw")) {
 
 glimpse(trend_raw)
 ```
-
 
 ```{r, output = TRUE, eval = TRUE, echo = FALSE}
 #| label: wrangle-trend
@@ -425,7 +434,6 @@ message("Trend range: ", min(monthly_totals$date),
         " to ", max(monthly_totals$date))
 ```
 
-
 ```{r, output = FALSE, eval = TRUE, echo = FALSE}
 #| label: fig-annual-trend
 #| fig-cap: "Total apparent fishing hours in the CCAMLR convention area per year. Blue ribbon = LOESS smooth (span = 0.9) with 95% CI."
@@ -465,7 +473,6 @@ p_annual <- ggplot(annual_totals,
 p_annual
 ```
 
-
 ```{r, output = FALSE, eval = TRUE, echo = FALSE}
 #| label: fig-monthly-anomaly
 #| fig-cap: "Standardised monthly fishing effort anomaly (z-score vs long-term monthly mean). Blue = below average; red = above average. Numbers show rounded z-scores."
@@ -502,7 +509,11 @@ p_anom <- monthly_anom |>
 p_anom
 ```
 
+
+
 # Annual and monthly trends in fisheries intensities
+
+
 
 ```{r, output = TRUE, eval = TRUE, echo = FALSE}
 #| label: fig-combined
@@ -516,9 +527,13 @@ temporal_compo <- p_annual / p_anom +
 plot(temporal_compo)
 ```
 
+
+
 ---
 
 # Gear-type composition over time
+
+
 
 ```{r, output = TRUE, eval = TRUE, echo = FALSE}
 #| label: fig-gear-trend
@@ -556,7 +571,11 @@ gearplot <- ggplot(gear_plot, aes(x = factor(year), y = fishing_hours / 1e3,
 plot(gearplot)
 ```
 
+
+
 ---
+
+
 
 ```{r}
 #| label: Save plots
@@ -583,7 +602,11 @@ ggsave(
 ```
 
 
+
+
 # Session information
+
+
 
 ```{r}
 #| label: session-info
@@ -591,6 +614,8 @@ ggsave(
 
 sessionInfo()
 ```
+
+
 
 ::: {.callout-tip}
 ## Reproducibility & troubleshooting
@@ -613,3 +638,4 @@ delete both `.rds` files before rendering.
 3. Contact GFW support at apis@globalfishingwatch.org with the printed
    request URL.
 :::
+

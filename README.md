@@ -7,7 +7,7 @@
 
 ## Overview
 
-This repository contains a fully reproducible [Quarto](https://quarto.org/) notebook that queries the [Global Fishing Watch (GFW) API v3](https://globalfishingwatch.org/our-apis/) to produce publication-ready data products on fishing activity within the **CCAMLR convention area** (Southern Ocean). It is intended as a contribution to the *State of the Antarctic Environment* reporting framework.
+This repository contains a fully reproducible [Quarto](https://quarto.org/) notebook that queries the [Global Fishing Watch (GFW) API v3](https://globalfishingwatch.org/our-apis/) to produce publication-ready data products on fishing activity around the **Antarctic Peninsula** (Southern Ocean). It is intended as a contribution to the *State of the Antarctic Environment* reporting framework.
 
 The notebook generates three categories of figures:
 
@@ -23,7 +23,7 @@ The notebook generates three categories of figures:
 
 ```
 .
-├── southern_ocean_fishing.qmd   # Main Quarto notebook (single source file)
+├── southern_ocean_fishing.qmd   # Main Quarto notebook (single source file). This file write the .pdf files
 ├── cache_heatmap_data.rds       # API cache — annual gridded effort (git-ignored)
 ├── cache_trend_data.rds         # API cache — monthly effort time series (git-ignored)
 └── README.md
@@ -55,6 +55,7 @@ install.packages(c(
   "rnaturalearth",     # land polygons for map backgrounds
   "rnaturalearthdata", # data dependency for rnaturalearth
   "glue"               # string interpolation
+  "rlang"              # regex
 ))
 ```
 
@@ -93,7 +94,7 @@ The rendered file `southern_ocean_fishing.html` will appear in the working direc
 
 **Source:** Global Fishing Watch — [AIS-based apparent fishing effort dataset](https://globalfishingwatch.org/dataset-and-code-fishing-effort/), `public-global-fishing-effort:v3.0`. Coverage: 2017-01-01 to ~5 days before the query date.
 
-**Study region:** The **CCAMLR convention area** (Commission for the Conservation of Antarctic Marine Living Resources), queried via `region_source = "RFMO"` in the GFW API. This boundary follows the Antarctic Convergence (~45–60°S depending on longitude) and is the primary international fisheries management boundary for the Southern Ocean. Using a named RFMO region rather than a custom bounding box avoids API timeout errors that occur when submitting very large polygons.
+**Study region:** The **Antarctic Peninsula** 
 
 **Effort metric:** *Apparent fishing hours* — the cumulative time AIS-equipped vessels were algorithmically classified as fishing within each 0.1° × 0.1° grid cell, based on changes in vessel speed and heading.
 
@@ -128,20 +129,6 @@ CURRENT_YEAR <- 2025   # change to the most recent complete calendar year
 
 2. Delete the cache files to trigger a fresh API fetch.
 3. Re-render.
-
----
-
-## Troubleshooting
-
-| Symptom | Likely cause | Fix |
-|---|---|---|
-| Cache loads with 0 rows | Previous fetch timed out | Delete cache file; notebook will auto-retry with `gfw_get_last_report()` |
-| `HTTP 429 Too Many Requests` | Rate limit hit (concurrent report running) | Wait ~90 s and re-render |
-| `HTTP 524` on first fetch | Large query timed out server-side | The notebook polls `gfw_get_last_report()` automatically; wait and re-render |
-| `Error: GFW_TOKEN not found` | Token not set in `.Renviron` | See [GFW API token](#gfw-api-token) setup above |
-| Empty plots / no Southern Ocean data | Wrong region ID resolved | Run `gfw_region_id("CCAMLR", "RFMO")` interactively to verify the ID |
-
-For persistent API issues, run the failing call with `print_request = TRUE` and send the printed URL to [apis@globalfishingwatch.org](mailto:apis@globalfishingwatch.org).
 
 ---
 
