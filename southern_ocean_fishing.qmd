@@ -407,7 +407,7 @@ annual_totals <- monthly_totals |>
   group_by(cal_year) |>
   summarise(annual_hours = sum(fishing_hours), .groups = "drop")
 
-# Standardised monthly anomaly (z-score vs long-term monthly climatology)
+# Standardised monthly anomaly (z-score vs long-term monthly)
 monthly_clim <- monthly_totals |>
   group_by(cal_month) |>
   summarise(clim_mean = mean(fishing_hours, na.rm = TRUE),
