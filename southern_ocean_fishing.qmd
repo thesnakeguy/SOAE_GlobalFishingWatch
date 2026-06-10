@@ -121,9 +121,7 @@ on total fishing activity.
 
 fetch_year_robust <- function(year, region_id, key,
                               group       = "GEARTYPE",
-                              res         = "YEARLY",
-                              max_retries = 5,
-                              wait_sec    = 90) {
+                              res         = "YEARLY") {
 
   message(glue("  Fetching {year} [{group} / {res}]..."))
 
@@ -143,37 +141,6 @@ fetch_year_robust <- function(year, region_id, key,
       NULL
     }
   )
-
-  # If the first call failed (timeout / 429), poll gfw_get_last_report()
-  if (is.null(result) || nrow(result) == 0) {
-    message(glue("    Initial call returned no data. ",
-                 "Polling gfw_get_last_report() (max {max_retries} tries)..."))
-
-    for (attempt in seq_len(max_retries)) {
-      message(glue("    Waiting {wait_sec} s before attempt {attempt}..."))
-      Sys.sleep(wait_sec)
-
-      result <- tryCatch(
-        gfw_get_last_report(key = key),
-        error = function(e) {
-          message(glue("    Attempt {attempt} failed: {conditionMessage(e)}"))
-          NULL
-        }
-      )
-
-      # Accept result only if it has actual data rows
-      if (!is.null(result) && is.data.frame(result) && nrow(result) > 0) {
-        message(glue("    Success on attempt {attempt}: {nrow(result)} rows."))
-        break
-      }
-    }
-  }
-
-  # Final guard: return NULL rather than an empty frame so compact() drops it
-  if (is.null(result) || !is.data.frame(result) || nrow(result) == 0) {
-    warning(glue("Could not retrieve data for {year}. Skipping."))
-    return(NULL)
-  }
 
   result
 }
